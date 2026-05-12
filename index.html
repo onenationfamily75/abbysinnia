@@ -72,12 +72,194 @@ document.querySelector('#heroForm input[name=date]').valueAsDate=new Date(Date.n
 <section><div class="container">
 <div class="subhead">Transparent Pricing</div>
 <h2 class="title">All Routes & Fares</h2>
-<p class="intro">Luxury travel made accessible. Explore our fixed route pricing with no hidden booking fees.</p>
-<table class="routes">
-<thead><tr><th>From</th><th>To</th><th>Fare</th><th>Class</th><th>Action</th></tr></thead>
-<tbody><tr><td>Nairobi</td><td>Isiolo</td><td class="price">KES 1,500</td><td>Economy / VIP</td><td><a href="book.html?from=Nairobi&to=Isiolo" class="btn-gold">Book</a></td></tr><tr><td>Nairobi</td><td>Marsabit</td><td class="price">KES 2,000</td><td>Economy / VIP</td><td><a href="book.html?from=Nairobi&to=Marsabit" class="btn-gold">Book</a></td></tr><tr><td>Nairobi</td><td>Sololo</td><td class="price">KES 2,200</td><td>Economy / VIP</td><td><a href="book.html?from=Nairobi&to=Sololo" class="btn-gold">Book</a></td></tr><tr><td>Nairobi</td><td>Moyale</td><td class="price">KES 2,500</td><td>Economy / VIP</td><td><a href="book.html?from=Nairobi&to=Moyale" class="btn-gold">Book</a></td></tr><tr><td>Nairobi</td><td>Dalla</td><td class="price">KES 5,500</td><td>Economy / VIP</td><td><a href="book.html?from=Nairobi&to=Dalla" class="btn-gold">Book</a></td></tr><tr><td>Nairobi</td><td>Hawassa</td><td class="price">KES 6,500</td><td>VIP</td><td><a href="book.html?from=Nairobi&to=Hawassa" class="btn-gold">Book</a></td></tr><tr><td>Nairobi</td><td>Addis Ababa</td><td class="price">KES 7,500</td><td>VIP</td><td><a href="book.html?from=Nairobi&to=Addis Ababa" class="btn-gold">Book</a></td></tr><tr><td>Isiolo</td><td>Marsabit</td><td class="price">KES 1,000</td><td>Economy / VIP</td><td><a href="book.html?from=Isiolo&to=Marsabit" class="btn-gold">Book</a></td></tr><tr><td>Marsabit</td><td>Moyale</td><td class="price">KES 1,000</td><td>Economy / VIP</td><td><a href="book.html?from=Marsabit&to=Moyale" class="btn-gold">Book</a></td></tr><tr><td>Marsabit</td><td>Sololo</td><td class="price">KES 700</td><td>Economy / VIP</td><td><a href="book.html?from=Marsabit&to=Sololo" class="btn-gold">Book</a></td></tr><tr><td>Sololo</td><td>Moyale</td><td class="price">KES 700</td><td>Economy / VIP</td><td><a href="book.html?from=Sololo&to=Moyale" class="btn-gold">Book</a></td></tr><tr><td>Moyale</td><td>Dalla</td><td class="price">KES 3,000</td><td>Economy / VIP</td><td><a href="book.html?from=Moyale&to=Dalla" class="btn-gold">Book</a></td></tr><tr><td>Dalla</td><td>Hawassa</td><td class="price">KES 1,500</td><td>Economy / VIP</td><td><a href="book.html?from=Dalla&to=Hawassa" class="btn-gold">Book</a></td></tr><tr><td>Hawassa</td><td>Addis Ababa</td><td class="price">KES 1,500</td><td>VIP</td><td><a href="book.html?from=Hawassa&to=Addis Ababa" class="btn-gold">Book</a></td></tr></tbody>
-</table>
+<p class="intro">Choose your route and book in seconds. Confirmation is delivered instantly via WhatsApp.</p>
+<div class="route-grid">
+
+<div class="route-card">
+<div class="rc-head"><span class="rc-from">Nairobi</span><span class="rc-arrow">→</span><span class="rc-to">Isiolo</span></div>
+<div class="rc-body">
+<div class="rc-meta"><span>🕐 Departure</span><strong>07:00 PM</strong></div>
+<div class="rc-meta"><span>🚌 Class</span><strong>Standard VIP</strong></div>
+<div class="rc-meta"><span>🎟️ Fare</span><strong class="price">KES 1,500</strong></div>
+</div>
+<button class="btn-fill rc-btn" onclick="openBookingModal('Nairobi','Isiolo',1500)">Book Now</button>
+</div>
+<div class="route-card">
+<div class="rc-head"><span class="rc-from">Nairobi</span><span class="rc-arrow">→</span><span class="rc-to">Marsabit</span></div>
+<div class="rc-body">
+<div class="rc-meta"><span>🕐 Departure</span><strong>07:00 PM</strong></div>
+<div class="rc-meta"><span>🚌 Class</span><strong>Standard VIP</strong></div>
+<div class="rc-meta"><span>🎟️ Fare</span><strong class="price">KES 2,000</strong></div>
+</div>
+<button class="btn-fill rc-btn" onclick="openBookingModal('Nairobi','Marsabit',2000)">Book Now</button>
+</div>
+<div class="route-card">
+<div class="rc-head"><span class="rc-from">Nairobi</span><span class="rc-arrow">→</span><span class="rc-to">Sololo</span></div>
+<div class="rc-body">
+<div class="rc-meta"><span>🕐 Departure</span><strong>07:00 PM</strong></div>
+<div class="rc-meta"><span>🚌 Class</span><strong>Standard VIP</strong></div>
+<div class="rc-meta"><span>🎟️ Fare</span><strong class="price">KES 2,200</strong></div>
+</div>
+<button class="btn-fill rc-btn" onclick="openBookingModal('Nairobi','Sololo',2200)">Book Now</button>
+</div>
+<div class="route-card">
+<div class="rc-head"><span class="rc-from">Nairobi</span><span class="rc-arrow">→</span><span class="rc-to">Moyale</span></div>
+<div class="rc-body">
+<div class="rc-meta"><span>🕐 Departure</span><strong>07:00 PM</strong></div>
+<div class="rc-meta"><span>🚌 Class</span><strong>Standard VIP</strong></div>
+<div class="rc-meta"><span>🎟️ Fare</span><strong class="price">KES 2,500</strong></div>
+</div>
+<button class="btn-fill rc-btn" onclick="openBookingModal('Nairobi','Moyale',2500)">Book Now</button>
+</div>
+<div class="route-card">
+<div class="rc-head"><span class="rc-from">Nairobi</span><span class="rc-arrow">→</span><span class="rc-to">Dalla</span></div>
+<div class="rc-body">
+<div class="rc-meta"><span>🕐 Departure</span><strong>07:00 PM</strong></div>
+<div class="rc-meta"><span>🚌 Class</span><strong>Standard VIP</strong></div>
+<div class="rc-meta"><span>🎟️ Fare</span><strong class="price">KES 5,500</strong></div>
+</div>
+<button class="btn-fill rc-btn" onclick="openBookingModal('Nairobi','Dalla',5500)">Book Now</button>
+</div>
+<div class="route-card">
+<div class="rc-head"><span class="rc-from">Nairobi</span><span class="rc-arrow">→</span><span class="rc-to">Hawassa</span></div>
+<div class="rc-body">
+<div class="rc-meta"><span>🕐 Departure</span><strong>07:00 PM</strong></div>
+<div class="rc-meta"><span>🚌 Class</span><strong>Standard VIP</strong></div>
+<div class="rc-meta"><span>🎟️ Fare</span><strong class="price">KES 6,500</strong></div>
+</div>
+<button class="btn-fill rc-btn" onclick="openBookingModal('Nairobi','Hawassa',6500)">Book Now</button>
+</div>
+<div class="route-card">
+<div class="rc-head"><span class="rc-from">Nairobi</span><span class="rc-arrow">→</span><span class="rc-to">Addis Ababa</span></div>
+<div class="rc-body">
+<div class="rc-meta"><span>🕐 Departure</span><strong>07:00 PM</strong></div>
+<div class="rc-meta"><span>🚌 Class</span><strong>Standard VIP</strong></div>
+<div class="rc-meta"><span>🎟️ Fare</span><strong class="price">KES 7,500</strong></div>
+</div>
+<button class="btn-fill rc-btn" onclick="openBookingModal('Nairobi','Addis Ababa',7500)">Book Now</button>
+</div>
+<div class="route-card">
+<div class="rc-head"><span class="rc-from">Isiolo</span><span class="rc-arrow">→</span><span class="rc-to">Marsabit</span></div>
+<div class="rc-body">
+<div class="rc-meta"><span>🕐 Departure</span><strong>07:00 PM</strong></div>
+<div class="rc-meta"><span>🚌 Class</span><strong>Standard VIP</strong></div>
+<div class="rc-meta"><span>🎟️ Fare</span><strong class="price">KES 1,000</strong></div>
+</div>
+<button class="btn-fill rc-btn" onclick="openBookingModal('Isiolo','Marsabit',1000)">Book Now</button>
+</div>
+<div class="route-card">
+<div class="rc-head"><span class="rc-from">Marsabit</span><span class="rc-arrow">→</span><span class="rc-to">Moyale</span></div>
+<div class="rc-body">
+<div class="rc-meta"><span>🕐 Departure</span><strong>07:00 PM</strong></div>
+<div class="rc-meta"><span>🚌 Class</span><strong>Standard VIP</strong></div>
+<div class="rc-meta"><span>🎟️ Fare</span><strong class="price">KES 1,000</strong></div>
+</div>
+<button class="btn-fill rc-btn" onclick="openBookingModal('Marsabit','Moyale',1000)">Book Now</button>
+</div>
+<div class="route-card">
+<div class="rc-head"><span class="rc-from">Marsabit</span><span class="rc-arrow">→</span><span class="rc-to">Sololo</span></div>
+<div class="rc-body">
+<div class="rc-meta"><span>🕐 Departure</span><strong>07:00 PM</strong></div>
+<div class="rc-meta"><span>🚌 Class</span><strong>Standard VIP</strong></div>
+<div class="rc-meta"><span>🎟️ Fare</span><strong class="price">KES 700</strong></div>
+</div>
+<button class="btn-fill rc-btn" onclick="openBookingModal('Marsabit','Sololo',700)">Book Now</button>
+</div>
+<div class="route-card">
+<div class="rc-head"><span class="rc-from">Sololo</span><span class="rc-arrow">→</span><span class="rc-to">Moyale</span></div>
+<div class="rc-body">
+<div class="rc-meta"><span>🕐 Departure</span><strong>07:00 PM</strong></div>
+<div class="rc-meta"><span>🚌 Class</span><strong>Standard VIP</strong></div>
+<div class="rc-meta"><span>🎟️ Fare</span><strong class="price">KES 700</strong></div>
+</div>
+<button class="btn-fill rc-btn" onclick="openBookingModal('Sololo','Moyale',700)">Book Now</button>
+</div>
+<div class="route-card">
+<div class="rc-head"><span class="rc-from">Moyale</span><span class="rc-arrow">→</span><span class="rc-to">Dalla</span></div>
+<div class="rc-body">
+<div class="rc-meta"><span>🕐 Departure</span><strong>07:00 PM</strong></div>
+<div class="rc-meta"><span>🚌 Class</span><strong>Standard VIP</strong></div>
+<div class="rc-meta"><span>🎟️ Fare</span><strong class="price">KES 3,000</strong></div>
+</div>
+<button class="btn-fill rc-btn" onclick="openBookingModal('Moyale','Dalla',3000)">Book Now</button>
+</div>
+<div class="route-card">
+<div class="rc-head"><span class="rc-from">Dalla</span><span class="rc-arrow">→</span><span class="rc-to">Hawassa</span></div>
+<div class="rc-body">
+<div class="rc-meta"><span>🕐 Departure</span><strong>07:00 PM</strong></div>
+<div class="rc-meta"><span>🚌 Class</span><strong>Standard VIP</strong></div>
+<div class="rc-meta"><span>🎟️ Fare</span><strong class="price">KES 1,500</strong></div>
+</div>
+<button class="btn-fill rc-btn" onclick="openBookingModal('Dalla','Hawassa',1500)">Book Now</button>
+</div>
+<div class="route-card">
+<div class="rc-head"><span class="rc-from">Hawassa</span><span class="rc-arrow">→</span><span class="rc-to">Addis Ababa</span></div>
+<div class="rc-body">
+<div class="rc-meta"><span>🕐 Departure</span><strong>07:00 PM</strong></div>
+<div class="rc-meta"><span>🚌 Class</span><strong>Standard VIP</strong></div>
+<div class="rc-meta"><span>🎟️ Fare</span><strong class="price">KES 1,500</strong></div>
+</div>
+<button class="btn-fill rc-btn" onclick="openBookingModal('Hawassa','Addis Ababa',1500)">Book Now</button>
+</div>
+</div>
 </div></section>
+
+<div id="bookingModal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
+<div class="modal-box">
+<button class="modal-close" onclick="closeModal()">×</button>
+<div class="modal-head">
+<div class="subhead" style="margin-bottom:6px">Quick Reservation</div>
+<h3 id="mTitle" style="color:#fff;font-size:1.5rem">— → —</h3>
+<p style="color:var(--gold);margin-top:4px" id="mFare">KES 0</p>
+</div>
+<form id="modalForm" onsubmit="submitModalBooking(event)">
+<div class="field"><label>Full Name</label><input name="name" required placeholder="As on ID/Passport"></div>
+<div class="field"><label>Phone Number</label><input name="phone" required placeholder="+254..."></div>
+<div class="two">
+<div class="field"><label>Travel Date</label><input name="date" type="date" required></div>
+<div class="field"><label>Passengers</label><select name="pax"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select></div>
+</div>
+<div class="field"><label>ID / Passport (optional)</label><input name="idn"></div>
+<div class="field"><label>Email (optional)</label><input name="email" type="email"></div>
+<div class="modal-summary">
+<div><span>Total</span><strong id="mTotal" class="price">KES 0</strong></div>
+</div>
+<button type="submit" class="confirm-btn wa-confirm">💬 Confirm & Send via WhatsApp</button>
+<a id="mSeatLink" href="#" class="btn-gold" style="display:block;text-align:center;margin-top:10px">Select Specific Seats →</a>
+</form>
+</div></div>
+
+<script>
+let M={from:'',to:'',fare:0};
+function openBookingModal(from,to,fare){
+  M={from,to,fare};
+  document.getElementById('mTitle').textContent=from+' → '+to;
+  document.getElementById('mFare').textContent='KES '+fare.toLocaleString()+' per ticket';
+  document.getElementById('mTotal').textContent='KES '+fare.toLocaleString();
+  const f=document.getElementById('modalForm');
+  f.date.valueAsDate=new Date(Date.now()+86400000);
+  f.pax.value='1';
+  document.getElementById('mSeatLink').href=`book.html?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
+  document.getElementById('bookingModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('bookingModal').classList.remove('open');document.body.style.overflow='';}
+document.getElementById('modalForm').addEventListener('input',e=>{
+  const f=e.currentTarget;
+  const pax=parseInt(f.pax.value)||1;
+  document.getElementById('mTotal').textContent='KES '+(M.fare*pax).toLocaleString();
+});
+function submitModalBooking(e){
+  e.preventDefault();
+  const f=e.target;
+  const pax=parseInt(f.pax.value);
+  const total=M.fare*pax;
+  const ref='ALC-'+Date.now().toString().slice(-7);
+  const msg=`*🎟️ ABYSSINIA LUXURY COACH — BOOKING REQUEST*%0A%0A*Reference:* ${ref}%0A%0A*Route:* ${M.from} → ${M.to}%0A*Travel Date:* ${f.date.value}%0A*Departure:* 07:00 PM%0A*Passengers:* ${pax}%0A%0A*Passenger Name:* ${f.name.value}%0A*Phone:* ${f.phone.value}%0A*ID/Passport:* ${f.idn.value||'—'}%0A*Email:* ${f.email.value||'—'}%0A%0A*Fare per ticket:* KES ${M.fare.toLocaleString()}%0A*Total Payable:* KES ${total.toLocaleString()}%0A%0APayment Method: M-Pesa to 0752606760%0A%0APlease confirm my reservation and assign my seats.%0A%0AThank you!`;
+  window.open(`https://wa.me/254752606760?text=${msg}`,'_blank');
+  setTimeout(()=>{alert('Booking request sent to WhatsApp! Our team will confirm your seats shortly.');closeModal();},400);
+}
+</script>
 <div class="cta-band"><div class="container">
 <h2>Ready for an Unforgettable Journey?</h2>
 <p>Seats are filling up fast for the next Nairobi–Addis departure. Secure your ticket online and experience travel as it should be.</p>
