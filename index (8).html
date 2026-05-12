@@ -1,0 +1,92 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Home | Abyssinia Luxury Coach</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head><body>
+
+<nav class="top"><div class="wrap">
+<a href="index.html" class="logo"><div class="badge">🚌</div><h1>Abyssinia <span>Luxury Coach</span></h1></a>
+<div class="menu"><a href="index.html" class="active">Our Fleet</a><a href="routes.html" class="">Destinations</a><a href="services.html" class="">VIP Lounge</a><a href="contact.html" class="">Contact</a><a href="book.html" class="btn-gold">Book Ticket</a></div>
+</div></nav>
+
+<section class="hero"><div class="container"><div class="grid">
+<div>
+<div class="label">Premium Travel Experience</div>
+<h2>Redefining <span>The Journey</span></h2>
+<p>Experience unrivaled comfort and sophistication across East Africa. From Nairobi to the heart of Ethiopia, travel in our state-of-the-art luxury liners equipped with Wi-Fi, reclining seats, and on-board service.</p>
+<div class="stats">
+<div class="stat"><div class="n">12+</div><div class="t">Destinations</div></div>
+<div class="stat"><div class="n">24/7</div><div class="t">Concierge</div></div>
+<div class="stat"><div class="n">Gold</div><div class="t">Safety Rating</div></div>
+</div>
+</div>
+
+<div class="reservation">
+<h3>Reserve Your Seat</h3>
+<p class="sub">Quick booking • Confirmation via WhatsApp</p>
+<form id="heroForm" onsubmit="goBook(event)">
+<div class="two">
+<div class="field"><label>From</label><select name="from"><option>Nairobi</option><option>Isiolo</option><option>Marsabit</option><option>Sololo</option><option>Moyale</option><option>Dalla</option><option>Hawassa</option><option>Addis Ababa</option></select></div>
+<div class="field"><label>To</label><select name="to"><option >Nairobi</option><option >Isiolo</option><option >Marsabit</option><option >Sololo</option><option >Moyale</option><option >Dalla</option><option >Hawassa</option><option selected>Addis Ababa</option></select></div>
+</div>
+<div class="two">
+<div class="field"><label>Departure Date</label><input type="date" name="date" required></div>
+<div class="field"><label>Passengers</label><select name="pax"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select></div>
+</div>
+<button type="submit" class="btn-fill" style="width:100%;margin-top:8px">Book Now</button>
+<p style="text-align:center;color:#888;font-size:.75rem;margin-top:14px">🔒 Secure Checkout · Visa · M-Pesa · Telebirr</p>
+</form>
+</div>
+<script>
+function goBook(e){e.preventDefault();const f=e.target;const q=new URLSearchParams({from:f.from.value,to:f.to.value,date:f.date.value,pax:f.pax.value});location.href='book.html?'+q;}
+document.querySelector('#heroForm input[name=date]').valueAsDate=new Date(Date.now()+86400000);
+</script>
+
+</div></div></section>
+
+<section><div class="container">
+<div class="subhead">The Gold Standard</div>
+<h2 class="title">Travel in Ultimate Comfort</h2>
+<p class="intro">Every detail of your journey has been engineered for an elite cross-border experience.</p>
+<div class="cards">
+<div class="card"><div class="ic">💺</div><h3>Luxury Seating</h3><p>Ergonomic 2x2 reclining seats with ample legroom for total comfort during the 20-hour journey.</p></div>
+<div class="card"><div class="ic">📶</div><h3>High-Speed WiFi</h3><p>Stay connected across borders with our onboard satellite internet connectivity.</p></div>
+<div class="card"><div class="ic">❄️</div><h3>Full Climate Control</h3><p>Advanced HVAC systems maintaining perfect temperature regardless of the outside environment.</p></div>
+<div class="card"><div class="ic">🔌</div><h3>USB Charging</h3><p>Dedicated USB ports at every seat to keep your devices fully charged throughout the trip.</p></div>
+<div class="card"><div class="ic">🍽️</div><h3>Refreshments</h3><p>Complimentary water and light snacks served by our professional cabin crew.</p></div>
+<div class="card"><div class="ic">🛡️</div><h3>Safety First</h3><p>GPS tracking, speed governors, and dual highly trained drivers for maximum security.</p></div>
+</div></div></section>
+
+<section><div class="container">
+<div class="subhead">Choose Your VIP Experience</div>
+<h2 class="title">Our Coach Classes</h2>
+<p class="intro">Tailor your journey with our specialized coach classes — from comfortable economy to elite luxury.</p>
+<div class="fleet">
+<div class="ft"><div class="from">Starting From</div><div class="amt">1,500 KES</div><h4>Economy VIP</h4><ul><li>Standard Reclining Seats</li><li>Air Conditioning</li><li>USB Charging</li><li>2x2 Seating</li></ul><a href="book.html" class="btn-gold">Book This Coach</a></div>
+<div class="ft featured"><div class="tag">Recommended</div><div class="from">Starting From</div><div class="amt">2,500 KES</div><h4>Standard VIP</h4><ul><li>Extra Legroom</li><li>WiFi</li><li>Refreshments</li><li>Priority Boarding</li></ul><a href="book.html" class="btn-gold">Book This Coach</a></div>
+<div class="ft"><div class="from">Starting From</div><div class="amt">7,500 KES</div><h4>Luxury VIP</h4><ul><li>Fully Flat Beds</li><li>Personal TV</li><li>Premium Cuisine</li><li>Lounge Access</li></ul><a href="book.html" class="btn-gold">Book This Coach</a></div>
+</div></div></section>
+
+<div class="cta-band"><div class="container">
+<h2>Ready for an Unforgettable Journey?</h2>
+<p>Seats are filling up fast for the next Nairobi–Addis departure. Secure your ticket online and experience travel as it should be.</p>
+<a href="book.html" class="btn-fill">Reserve Your Spot</a>
+</div></div>
+
+
+<footer><div class="container">
+<div class="cols">
+<div>
+<div class="logo"><div class="badge">🚌</div><h1>Abyssinia <span>Luxury Coach</span></h1></div>
+<p style="margin-top:14px;max-width:340px">Premium cross-border luxury coach service connecting Nairobi to Addis Ababa with unmatched comfort and reliability.</p>
+</div>
+<div><h4>Explore</h4><a href="index.html">Home</a><a href="routes.html">Routes</a><a href="services.html">Services</a><a href="contact.html">Contact</a><a href="book.html">Book Ticket</a></div>
+<div><h4>Support</h4><a href="#">Track My Bus</a><a href="#">Bus Hire</a><a href="contact.html">Contact Us</a><a href="https://wa.me/254752606760">WhatsApp Support</a></div>
+<div><h4>Reach Us</h4><p>Eastleigh, Nairobi</p><a href="tel:+254752606760">+254 752 606 760</a><a href="https://wa.me/254752606760">WhatsApp: 0752 606 760</a></div>
+</div>
+<div class="copy">© 2026 Abyssinia Luxury Coach Service. All Rights Reserved. | M-PESA • CASH • BANK TRANSFER</div>
+</div></footer>
+<a href="https://wa.me/254752606760" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">💬</a>
+
+</body></html>

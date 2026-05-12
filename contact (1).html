@@ -1,0 +1,62 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contact | Abyssinia Luxury Coach</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head><body>
+
+<nav class="top"><div class="wrap">
+<a href="index.html" class="logo"><div class="badge">🚌</div><h1>Abyssinia <span>Luxury Coach</span></h1></a>
+<div class="menu"><a href="index.html" class="">Our Fleet</a><a href="routes.html" class="">Destinations</a><a href="services.html" class="">VIP Lounge</a><a href="contact.html" class="active">Contact</a><a href="book.html" class="btn-gold">Book Ticket</a></div>
+</div></nav>
+
+<section style="padding-top:160px"><div class="container">
+<div class="subhead">Get In Touch</div>
+<h2 class="title">Contact Us</h2>
+<p class="intro">Our team is available 24/7. Reach us via WhatsApp, phone or the form below.</p>
+<div class="contact-grid">
+<div class="card">
+<h3 style="color:#fff;margin-bottom:24px">Reach The Concierge</h3>
+<div class="info-row"><div class="ic">📞</div><div><h5>Phone</h5><p><a href="tel:+254752606760" style="color:var(--gold)">+254 752 606 760</a></p></div></div>
+<div class="info-row"><div class="ic">💬</div><div><h5>WhatsApp</h5><p><a href="https://wa.me/254752606760" style="color:var(--gold)">+254 752 606 760</a></p></div></div>
+<div class="info-row"><div class="ic">📍</div><div><h5>Terminal</h5><p>Eastleigh, Nairobi, Kenya</p></div></div>
+<div class="info-row"><div class="ic">🕐</div><div><h5>Office Hours</h5><p>Monday – Sunday • 6:00 AM – 11:00 PM</p></div></div>
+<div class="info-row"><div class="ic">✉️</div><div><h5>Email</h5><p>bookings@abyssinialuxurycoach.com</p></div></div>
+</div>
+<div class="card">
+<h3 style="color:#fff;margin-bottom:24px">Send Us A Message</h3>
+<form onsubmit="sendContact(event)">
+<input name="name" placeholder="Full Name" required>
+<input name="phone" placeholder="Phone Number" required>
+<input name="email" type="email" placeholder="Email Address">
+<select name="topic"><option>General Enquiry</option><option>Booking Help</option><option>Bus Hire / Charter</option><option>Lost & Found</option><option>Feedback</option></select>
+<textarea name="msg" placeholder="Your message" required></textarea>
+<button type="submit" class="btn-fill" style="width:100%">Send via WhatsApp</button>
+</form>
+</div>
+</div>
+</div></section>
+<script>
+function sendContact(e){
+e.preventDefault();const f=e.target;
+const txt=`*New Enquiry — Abyssinia Luxury Coach*%0A%0A*Name:* ${f.name.value}%0A*Phone:* ${f.phone.value}%0A*Email:* ${f.email.value||'—'}%0A*Topic:* ${f.topic.value}%0A%0A*Message:*%0A${f.msg.value}`;
+window.open(`https://wa.me/254752606760?text=${txt}`,'_blank');
+}
+</script>
+
+
+<footer><div class="container">
+<div class="cols">
+<div>
+<div class="logo"><div class="badge">🚌</div><h1>Abyssinia <span>Luxury Coach</span></h1></div>
+<p style="margin-top:14px;max-width:340px">Premium cross-border luxury coach service connecting Nairobi to Addis Ababa with unmatched comfort and reliability.</p>
+</div>
+<div><h4>Explore</h4><a href="index.html">Home</a><a href="routes.html">Routes</a><a href="services.html">Services</a><a href="contact.html">Contact</a><a href="book.html">Book Ticket</a></div>
+<div><h4>Support</h4><a href="#">Track My Bus</a><a href="#">Bus Hire</a><a href="contact.html">Contact Us</a><a href="https://wa.me/254752606760">WhatsApp Support</a></div>
+<div><h4>Reach Us</h4><p>Eastleigh, Nairobi</p><a href="tel:+254752606760">+254 752 606 760</a><a href="https://wa.me/254752606760">WhatsApp: 0752 606 760</a></div>
+</div>
+<div class="copy">© 2026 Abyssinia Luxury Coach Service. All Rights Reserved. | M-PESA • CASH • BANK TRANSFER</div>
+</div></footer>
+<a href="https://wa.me/254752606760" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">💬</a>
+
+</body></html>
