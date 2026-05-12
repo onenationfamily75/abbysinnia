@@ -129,3 +129,11 @@ footer .copy{text-align:center;color:var(--muted);font-size:.85rem;padding-top:2
 .modal-summary{display:flex;justify-content:space-between;align-items:center;background:#0a0a0a;border:1px solid rgba(201,162,75,.25);border-radius:6px;padding:14px 18px;margin:18px 0}
 .modal-summary span{color:var(--muted);font-size:.85rem;letter-spacing:.2em;text-transform:uppercase}
 .modal-summary strong{font-size:1.3rem}
+
+.class-banner{text-align:center;color:#fff;font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;padding:10px;margin:14px 0 10px;border-radius:4px;font-weight:700}
+.vip-banner{background:linear-gradient(90deg,rgba(201,162,75,.25),rgba(228,199,121,.18));color:var(--gold);border:1px solid rgba(201,162,75,.45)}
+.normal-banner{background:rgba(255,255,255,.04);color:#bbb;border:1px solid rgba(255,255,255,.08)}
+.seat.vip{background:rgba(201,162,75,.12);border-color:rgba(201,162,75,.5);color:var(--gold)}
+.seat.vip:hover{background:rgba(201,162,75,.25)}
+.seat.vip.selected{background:var(--gold);color:#000}
+.seat.vip.occupied{background:#3a1818;color:#7a3333;border-color:#502020}
