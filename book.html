@@ -64,7 +64,7 @@
 <ol style="color:var(--muted);font-size:.88rem;padding-left:20px;line-height:1.9">
 <li>Open M-Pesa App or Sim Tool Kit</li>
 <li>Select "Send Money"</li>
-<li>Enter Number: 0752606760</li>
+<li>Enter Number: 0713482344</li>
 <li>Enter total amount shown in summary</li>
 <li>Confirm payment</li>
 <li>Send the M-Pesa confirmation message via WhatsApp by clicking the button below</li>
@@ -195,7 +195,7 @@ function confirmBooking(){
     alert('Please fill in your name and phone number.');return;
   }
   const ref='ALC-'+Date.now().toString().slice(-7);
-  const msg=`*🎟️ ABYSSINIA LUXURY COACH — BOOKING CONFIRMATION*%0A%0A*Reference:* ${ref}%0A%0A*Route:* ${from} → ${to}%0A*Travel Date:* ${date}%0A*Departure:* 07:00 PM%0A*Passengers:* ${pax}%0A%0A*VIP Seats (${selVip.size}):* ${vipList} — KES ${vipFare.toLocaleString()} each%0A*Normal Seats (${selNormal.size}):* ${normalList} — KES ${fare.toLocaleString()} each%0A%0A*Passenger Name:* ${name}%0A*Phone:* ${phone}%0A*ID/Passport:* ${idn}%0A*Email:* ${email}%0A%0A*Total Payable:* KES ${total.toLocaleString()}%0A%0APayment Method: M-Pesa to 0752606760%0A%0APlease confirm my reservation and share boarding details.%0A%0AThank you!`;
+  const msg=`*🎟️ ABYSSINIA LUXURY COACH — BOOKING CONFIRMATION*%0A%0A*Reference:* ${ref}%0A%0A*Route:* ${from} → ${to}%0A*Travel Date:* ${date}%0A*Departure:* 07:00 PM%0A*Passengers:* ${pax}%0A%0A*VIP Seats (${selVip.size}):* ${vipList} — KES ${vipFare.toLocaleString()} each%0A*Normal Seats (${selNormal.size}):* ${normalList} — KES ${fare.toLocaleString()} each%0A%0A*Passenger Name:* ${name}%0A*Phone:* ${phone}%0A*ID/Passport:* ${idn}%0A*Email:* ${email}%0A%0A*Total Payable:* KES ${total.toLocaleString()}%0A%0APayment Method: M-Pesa to 0713482344%0A%0APlease confirm my reservation and share boarding details.%0A%0AThank you!`;
   window.open(`https://wa.me/254752606760?text=${msg}`,'_blank');
   setTimeout(()=>alert('Booking sent to WhatsApp! Our team will confirm your reservation shortly.'),500);
 }
