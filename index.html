@@ -165,57 +165,51 @@
     text-transform:uppercase; letter-spacing:0.03em; font-weight:600;
   }
 
-  /* ---------- Search widget in hero (compact) ---------- */
+  /* ---------- Search widget in hero ---------- */
   .search-widget{
     position:relative; z-index:2;
     background:var(--paper);
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:16px 18px 18px;
-    box-shadow:0 20px 40px -24px rgba(28,37,65,0.4);
-    margin-bottom:-32px;
-    transform:translateY(32px);
+    border-radius:10px;
+    padding:22px 24px 24px;
+    box-shadow:0 40px 70px -25px rgba(0,0,0,0.5);
+    margin-bottom:-46px;
+    transform:translateY(46px);
     color:var(--charcoal);
-    max-width:920px;
   }
-  .search-widget-head{
-    display:flex; align-items:baseline; justify-content:space-between; gap:12px;
-    margin-bottom:12px; flex-wrap:wrap;
-  }
-  .search-widget h3{font-size:0.92rem; margin:0;}
-  .search-widget .sub{font-size:0.76rem; color:rgba(33,29,27,0.55); margin:0;}
-  .trip-toggle{display:inline-flex; gap:2px; padding:2px; background:var(--sand); border:1px solid var(--line); border-radius:16px;}
+  .search-widget h3{font-size:1rem; margin-bottom:2px;}
+  .search-widget .sub{font-size:0.8rem; color:rgba(33,29,27,0.6); margin-bottom:16px;}
+  .trip-toggle{display:flex; gap:8px; margin-bottom:14px;}
   .trip-tab{
-    padding:5px 12px; border:none; border-radius:14px; background:transparent;
-    font-size:0.74rem; font-weight:500; color:var(--charcoal);
+    padding:8px 16px; border:1px solid var(--line); border-radius:20px; background:var(--paper);
+    font-size:0.82rem; font-weight:500; color:var(--charcoal);
   }
-  .trip-tab.selected{background:var(--ink); color:var(--sand);}
+  .trip-tab.selected{background:var(--ink); border-color:var(--ink); color:var(--sand);}
   .search-form{
     display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));
-    gap:10px;
+    grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+    gap:14px;
     align-items:end;
   }
-  .field.button-field{min-width:110px;}
+  .field.button-field{min-width:150px;}
   .field label{
-    display:block; font-family:'IBM Plex Mono',monospace; font-size:0.6rem; text-transform:uppercase;
-    letter-spacing:0.07em; color:var(--rust); margin-bottom:5px;
+    display:block; font-family:'IBM Plex Mono',monospace; font-size:0.68rem; text-transform:uppercase;
+    letter-spacing:0.08em; color:var(--rust); margin-bottom:7px;
   }
   .field select, .field input{
-    width:100%; padding:8px 10px; border:1px solid var(--line); border-radius:5px;
-    background:var(--paper); font-size:0.82rem; color:var(--charcoal); font-family:inherit;
-    min-height:36px;
+    width:100%; padding:11px 12px; border:1px solid var(--line); border-radius:6px;
+    background:var(--paper); font-size:0.9rem; color:var(--charcoal); font-family:inherit;
+    min-height:44px;
     -webkit-appearance:none; appearance:none;
   }
   .field select{
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%231C2541' stroke-width='1.6'><path d='M5 8l5 5 5-5'/></svg>");
-    background-repeat:no-repeat; background-position:right 8px center; background-size:14px;
-    padding-right:28px;
+    background-repeat:no-repeat; background-position:right 10px center; background-size:16px;
+    padding-right:34px;
   }
   .field select:focus, .field input:focus{outline:2px solid var(--amber); outline-offset:1px;}
-  .search-form .btn.full{padding:9px 16px; font-size:0.8rem; min-height:36px; white-space:nowrap;}
+  .search-form .btn.full{padding:12px 18px; font-size:0.92rem; min-height:44px;}
   .search-msg{
-    grid-column:1/-1; margin-top:2px; font-size:0.78rem; padding:9px 12px; border-radius:4px;
+    grid-column:1/-1; margin-top:4px; font-size:0.86rem; padding:12px 14px; border-radius:4px;
     display:none;
   }
   .search-msg.show{display:block;}
@@ -227,14 +221,14 @@
   @media (max-width:680px){
     .search-widget{
       margin-bottom:0; transform:none;
-      border-radius:0; border-left:none; border-right:none;
-      padding:18px 20px 22px;
+      border-radius:0; padding:24px 20px 28px;
       box-shadow:0 -8px 24px -18px rgba(0,0,0,0.35);
     }
-    .search-widget-head{flex-direction:column; align-items:flex-start; gap:8px;}
     .search-form{grid-template-columns:1fr; gap:12px;}
-    .trip-tab{padding:7px 14px; font-size:0.78rem;}
-    .search-form .btn.full{padding:12px 16px; font-size:0.86rem; min-height:42px;}
+    .trip-toggle{gap:0; padding:3px; background:var(--sand); border-radius:22px; border:1px solid var(--line);}
+    .trip-tab{flex:1; text-align:center; border:none; border-radius:18px; padding:9px 10px;}
+    .trip-tab.selected{box-shadow:0 2px 6px rgba(28,37,65,0.25);}
+    .search-form .btn.full{padding:14px 18px; font-size:0.95rem;}
   }
 
   /* ---------- Section shells ---------- */
@@ -572,15 +566,12 @@
 
   <div class="wrap">
     <div class="search-widget">
-      <div class="search-widget-head">
-        <div>
-          <h3>Choose your route and travel date</h3>
-          <div class="sub">Search live fares across our network — book in under a minute.</div>
-        </div>
-        <div class="trip-toggle">
-          <button type="button" class="trip-tab selected" id="tripOneWay" onclick="setSearchTripType('oneway')">One Way</button>
-          <button type="button" class="trip-tab" id="tripRoundTrip" onclick="setSearchTripType('roundtrip')">Round Trip</button>
-        </div>
+      <h3>Choose your route and travel date</h3>
+      <div class="sub">Search live fares across our network — book in under a minute.</div>
+
+      <div class="trip-toggle">
+        <button type="button" class="trip-tab selected" id="tripOneWay" onclick="setSearchTripType('oneway')">One Way</button>
+        <button type="button" class="trip-tab" id="tripRoundTrip" onclick="setSearchTripType('roundtrip')">Round Trip</button>
       </div>
 
       <div class="search-form">
@@ -1118,7 +1109,7 @@ var bookingState = {
   seats:{outbound:[], returnLeg:[]},
   bookedSeats:{},
   currentLeg:"outbound",
-  passengerNames:[], phone:"", notes:""
+  passengerNames:[], passengerIDs:[], passengerEmails:[], phone:"", notes:""
 };
 
 function setModalTripType(type){
@@ -1171,7 +1162,13 @@ function showStep(n){
     document.getElementById("tab"+name).classList.toggle("active", i === n-1);
   });
   document.getElementById("backBtn").style.visibility = n===1 ? "hidden" : "visible";
-  document.getElementById("nextBtn").textContent = n===4 ? "Confirm via WhatsApp" : "Continue";
+  if(n===4){
+    var perPax = classFarePerSeat();
+    var total = perPax * bookingState.pax;
+    document.getElementById("nextBtn").textContent = "Pay " + fmtKES(total);
+  } else {
+    document.getElementById("nextBtn").textContent = "Continue";
+  }
   if(n===2) renderClassStep();
   if(n===3) renderPassengerFields();
   if(n===4) renderReview();
@@ -1226,6 +1223,14 @@ function nextStep(){
     var phone = document.getElementById("pPhone").value.trim();
     if(!ok || !phone){ alert("Please enter a name for every passenger and a contact phone number."); return; }
     bookingState.passengerNames = names;
+    bookingState.passengerIDs = [];
+    bookingState.passengerEmails = [];
+    for(var j=0;j<bookingState.pax;j++){
+      var idEl = document.getElementById("pID"+j);
+      var emEl = document.getElementById("pEmail"+j);
+      bookingState.passengerIDs.push(idEl ? idEl.value.trim() : "");
+      bookingState.passengerEmails.push(emEl ? emEl.value.trim() : "");
+    }
     bookingState.phone = phone;
     bookingState.notes = document.getElementById("pNotes").value.trim();
     showStep(4);
@@ -1246,8 +1251,15 @@ function renderPassengerFields(){
   var html = "";
   for(var i=0;i<bookingState.pax;i++){
     var existing = bookingState.passengerNames[i] || "";
-    html += '<div class="modal-field"><label for="pName'+i+'">Passenger '+(i+1)+' Full Name</label>'+
-            '<input type="text" id="pName'+i+'" value="'+existing.replace(/"/g,'&quot;')+'" placeholder="e.g. Amina Yusuf"></div>';
+    html += '<div style="border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px;margin-bottom:14px;">'+
+            '<div style="font-size:11px;font-weight:700;letter-spacing:0.12em;color:var(--amber);text-transform:uppercase;margin-bottom:10px;">Passenger '+(i+1)+(bookingState.pax>1?'  ('+bookingState.pax+' total)':'')+'</div>'+
+            '<div class="modal-field"><label for="pName'+i+'">Full Name *</label>'+
+            '<input type="text" id="pName'+i+'" value="'+existing.replace(/"/g,'&quot;')+'" placeholder="e.g. Amina Yusuf"></div>'+
+            '<div class="modal-field"><label for="pID'+i+'">ID / Passport Number</label>'+
+            '<input type="text" id="pID'+i+'" placeholder="National ID or Passport No."></div>'+
+            '<div class="modal-field"><label for="pEmail'+i+'">Email Address</label>'+
+            '<input type="email" id="pEmail'+i+'" placeholder="email@example.com"></div>'+
+            '</div>';
   }
   wrap.innerHTML = html;
 }
@@ -1386,6 +1398,8 @@ function renderReview(){
     '<div class="review-line"><span class="k">Outbound Seats</span><span class="v">'+outboundSeats+'</span></div>'+
     (bookingState.tripType==="roundtrip" ? '<div class="review-line"><span class="k">Return Seats</span><span class="v">'+returnSeats+'</span></div>' : '') +
     '<div class="review-line"><span class="k">Passenger Names</span><span class="v">'+bookingState.passengerNames.join(", ")+'</span></div>'+
+    (bookingState.passengerIDs && bookingState.passengerIDs.filter(Boolean).length ? '<div class="review-line"><span class="k">ID / Passport</span><span class="v">'+bookingState.passengerIDs.filter(Boolean).join(", ")+'</span></div>' : '')+
+    (bookingState.passengerEmails && bookingState.passengerEmails.filter(Boolean).length ? '<div class="review-line"><span class="k">Email(s)</span><span class="v">'+bookingState.passengerEmails.filter(Boolean).join(", ")+'</span></div>' : '')+
     '<div class="review-line"><span class="k">Contact Phone</span><span class="v">'+bookingState.phone+'</span></div>'+
     (bookingState.notes ? '<div class="review-line"><span class="k">Notes</span><span class="v">'+bookingState.notes+'</span></div>' : '') +
     '<div class="review-line"><span class="k">Total Fare</span><span class="v review-total">'+fmtKES(total)+'</span></div>';
@@ -1407,6 +1421,8 @@ function sendWhatsApp(){
     "Outbound Seats: " + outboundSeats,
     (bookingState.tripType==="roundtrip" ? "Return Seats: " + returnSeats : ""),
     "Passenger Names: " + bookingState.passengerNames.join(", "),
+    (bookingState.passengerIDs && bookingState.passengerIDs.filter(Boolean).length ? "ID/Passport: " + bookingState.passengerIDs.filter(Boolean).join(", ") : ""),
+    (bookingState.passengerEmails && bookingState.passengerEmails.filter(Boolean).length ? "Email: " + bookingState.passengerEmails.filter(Boolean).join(", ") : ""),
     "Contact Phone: " + bookingState.phone,
     (bookingState.notes ? "Notes: " + bookingState.notes : ""),
     "Total Fare: " + fmtKES(total)
