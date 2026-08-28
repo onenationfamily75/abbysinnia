@@ -592,8 +592,8 @@
           <input type="date" id="returnDate">
         </div>
         <div class="field">
-          <label for="paxCount">Passengers 40</label>
-          <select id="paxCount">40</select>
+          <label for="paxCount">Passengers</label>
+          <select id="paxCount"></select>
         </div>
         <div class="field button-field">
           <label style="visibility:hidden;">Search</label>
@@ -871,7 +871,7 @@
           </div>
         </div>
         <div class="modal-field">
-          <label for="mPax">Number of Passengers40</label>
+          <label for="mPax">Number of Passengers 40</label>
           <select id="mPax">40</select>
         </div>
         <div class="search-msg" id="modalMsg"></div>
@@ -970,6 +970,7 @@ var CLASSES = [
 function getFare(a,b){
   if(!a || !b || a===b) return null;
   if(!(a in CITY_POSITION) || !(b in CITY_POSITION)) return null;
+  if((a==="Nairobi" && b==="Hawassa") || (a==="Hawassa" && b==="Nairobi")) return 6000;
   var diff = Math.abs(CITY_POSITION[a] - CITY_POSITION[b]);
   return Math.round(Math.max(diff, 800) / 50) * 50;
 }
@@ -989,7 +990,7 @@ function fillCitySelect(sel){
 
 function fillPaxSelect(sel){
   var opts = "";
-  for(var i=1;i<=8;i++){ opts += '<option value="'+i+'">'+i+' Passenger'+(i>1?'s':'')+'</option>'; }
+  for(var i=1;i<=40;i++){ opts += '<option value="'+i+'">'+i+' Passenger'+(i>1?'s':'')+'</option>'; }
   sel.innerHTML = opts;
 }
 ["paxCount","mPax"].forEach(function(id){ fillPaxSelect(document.getElementById(id)); });
@@ -1020,7 +1021,7 @@ function searchBuses(){
   var to = document.getElementById("toCity").value;
   var date = document.getElementById("travelDate").value;
   var returnDate = document.getElementById("returnDate").value;
-  var pax = parseInt(document.getElementById("paxCount").value || "40", 40);
+  var pax = parseInt(document.getElementById("paxCount").value || "1", 10);
   var msg = document.getElementById("searchMsg");
   var results = document.getElementById("busResults");
   results.className = "bus-results";
@@ -1134,13 +1135,13 @@ function openBooking(opts){
   bookingState.time = opts.time || "";
   bookingState.returnDate = opts.returnDate || "";
   bookingState.returnTime = opts.returnTime || "";
-  bookingState.pax = opts.pax || 40;
+  bookingState.pax = opts.pax || 1;
 
   document.getElementById("mFrom").value = bookingState.from;
   document.getElementById("mTo").value = bookingState.to;
   document.getElementById("mDate").value = bookingState.date;
   document.getElementById("mReturnDate").value = bookingState.returnDate;
-  document.getElementById("mPax").value = bookingState.pax 40;
+  document.getElementById("mPax").value = bookingState.pax;
   setModalTripType(bookingState.tripType);
   document.getElementById("modalMsg").className = "search-msg";
   document.getElementById("modalOverlay").classList.add("open");
@@ -1181,7 +1182,7 @@ function nextStep(){
     var to = document.getElementById("mTo").value;
     var date = document.getElementById("mDate").value;
     var time = document.getElementById("mTime").value;
-    var pax = parseInt(document.getElementById("mPax").value || "40", 40);
+    var pax = parseInt(document.getElementById("mPax").value || "1", 10);
     var returnDate = document.getElementById("mReturnDate").value;
     var returnTime = document.getElementById("mReturnTime").value;
     if(!from || !to){ msg.className="search-msg show missing"; msg.textContent="Please select both From and To cities."; return; }
@@ -1189,7 +1190,7 @@ function nextStep(){
     if(!getFare(from,to)){ msg.className="search-msg show missing"; msg.textContent="No direct route yet between "+from+" and "+to+". Try another pair or message us on WhatsApp."; return; }
     if(!date){ msg.className="search-msg show missing"; msg.textContent="Please choose a departure date."; return; }
     if(bookingState.tripType==="roundtrip" && !returnDate){ msg.className="search-msg show missing"; msg.textContent="Please choose a return date."; return; }
-    if(!pax || pax < 40){ pax = 40; }
+    if(!pax || pax < 1){ pax = 1; }
     if(bookingState.from !== from || bookingState.to !== to){
       bookingState.seats = {outbound:[], returnLeg:[]};
     }
@@ -1201,7 +1202,7 @@ function nextStep(){
   }
   if(bookingState.step === 2){
     if(bookingState.seats.outbound.length < bookingState.pax){
-      alert("Please select "+bookingState.pax40+" outbound seat(s) — you have "+bookingState.seats.outbound.length+" selected.");
+      alert("Please select "+bookingState.pax+" outbound seat(s) — you have "+bookingState.seats.outbound.length+" selected.");
       return;
     }
     if(bookingState.tripType==="roundtrip" && bookingState.seats.returnLeg.length < bookingState.pax){
@@ -1417,7 +1418,7 @@ function sendWhatsApp(){
     "Departure: " + bookingState.date + " · " + bookingState.time,
     (bookingState.tripType==="roundtrip" ? "Return: " + bookingState.returnDate + " · " + bookingState.returnTime : ""),
     "Class: " + c.label,
-    "Passengers 40: " + bookingState.pax 40,
+    "Passengers: " + bookingState.pax,
     "Outbound Seats: " + outboundSeats,
     (bookingState.tripType==="roundtrip" ? "Return Seats: " + returnSeats : ""),
     "Passenger Names: " + bookingState.passengerNames.join(", "),
