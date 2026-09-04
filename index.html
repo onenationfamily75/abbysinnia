@@ -407,10 +407,12 @@
   .modal-close:hover{background:rgba(243,234,217,0.24);}
   .modal-steps{
     display:flex; gap:0; padding:16px 28px 0; border-bottom:1px solid var(--line);
+    overflow-x:auto;
   }
   .modal-step-label{
     font-family:'IBM Plex Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.06em;
     color:rgba(33,29,27,0.4); padding-bottom:14px; margin-right:26px; border-bottom:2px solid transparent;
+    white-space:nowrap;
   }
   .modal-step-label.active{color:var(--rust); border-color:var(--rust);}
   .modal-body{padding:26px 28px 10px; max-height:60vh; overflow-y:auto;}
@@ -520,6 +522,22 @@
   .review-line .k{color:rgba(33,29,27,0.6);}
   .review-line .v{font-weight:600; color:var(--ink);}
   .review-total{font-family:'IBM Plex Mono',monospace; color:var(--rust); font-size:1.15rem;}
+
+  /* Payment step */
+  .pay-methods{display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;}
+  .pay-method{
+    flex:1; min-width:130px; border:1px solid var(--line); border-radius:6px; padding:14px 12px;
+    background:#fff; text-align:left; display:flex; align-items:center; gap:10px;
+  }
+  .pay-method.selected{border-color:var(--rust); background:rgba(166,61,48,0.06);}
+  .pay-method .pm-icon{
+    width:32px; height:32px; border-radius:50%; background:var(--sand); color:var(--ink);
+    display:flex; align-items:center; justify-content:center; font-size:0.95rem; flex-shrink:0;
+  }
+  .pay-method .pm-name{font-weight:600; font-size:0.88rem; color:var(--ink);}
+  .pay-method .pm-sub{font-size:0.72rem; color:rgba(33,29,27,0.55);}
+  .pay-fields{border:1px solid var(--line); border-radius:6px; padding:18px; background:var(--sand);}
+  .pay-note{font-size:0.78rem; color:rgba(33,29,27,0.55); margin-top:10px;}
 
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
@@ -824,7 +842,8 @@
       <div class="modal-step-label active" id="tabTrip">1 &middot; Trip</div>
       <div class="modal-step-label" id="tabClass">2 &middot; Class &amp; Seats</div>
       <div class="modal-step-label" id="tabDetails">3 &middot; Passenger</div>
-      <div class="modal-step-label" id="tabReview">4 &middot; Confirm</div>
+      <div class="modal-step-label" id="tabPayment">4 &middot; Payment</div>
+      <div class="modal-step-label" id="tabReview">5 &middot; Confirm</div>
     </div>
 
     <div class="modal-body">
@@ -913,7 +932,13 @@
         </div>
       </div>
 
-      <!-- Screen 4: Review -->
+      <!-- Screen 4: Payment -->
+      <div class="modal-screen" id="screenPayment">
+        <div class="pay-methods" id="payMethods"></div>
+        <div class="pay-fields" id="payFields"></div>
+      </div>
+
+      <!-- Screen 5: Review -->
       <div class="modal-screen" id="screenReview">
         <div class="review-box" id="reviewBox"></div>
       </div>
@@ -965,6 +990,12 @@ var CLASSES = [
   {key:"economy", label:"Gold Class (Economy)", seats:40, mult:1},
   {key:"premium", label:"Premium Coach", seats:36, mult:1.5},
   {key:"vip", label:"VIP Class", seats:20, mult:2}
+];
+
+var PAYMENT_METHODS = [
+  {key:"mpesa", label:"M-Pesa", sub:"Pay by phone number", icon:"📱"},
+  {key:"airtel", label:"Airtel Money", sub:"Pay by phone number", icon:"📲"},
+  {key:"visa", label:"Visa / Card", sub:"Pay by card", icon:"💳"}
 ];
 
 function getFare(a,b){
@@ -1110,7 +1141,9 @@ var bookingState = {
   seats:{outbound:[], returnLeg:[]},
   bookedSeats:{},
   currentLeg:"outbound",
-  passengerNames:[], passengerIDs:[], passengerEmails:[], phone:"", notes:""
+  passengerNames:[], passengerIDs:[], passengerEmails:[], phone:"", notes:"",
+  paymentMethod:"mpesa",
+  paymentDetails:{mpesaNumber:"", airtelNumber:"", cardNumber:"", cardExpiry:"", cardCVV:"", cardName:""}
 };
 
 function setModalTripType(type){
@@ -1158,12 +1191,12 @@ document.getElementById("modalOverlay").addEventListener("click", function(e){
 
 function showStep(n){
   bookingState.step = n;
-  ["Trip","Class","Details","Review"].forEach(function(name, i){
+  ["Trip","Class","Details","Payment","Review"].forEach(function(name, i){
     document.getElementById("screen"+name).classList.toggle("active", i === n-1);
     document.getElementById("tab"+name).classList.toggle("active", i === n-1);
   });
   document.getElementById("backBtn").style.visibility = n===1 ? "hidden" : "visible";
-  if(n===4){
+  if(n===5){
     var perPax = classFarePerSeat();
     var total = perPax * bookingState.pax;
     document.getElementById("nextBtn").textContent = "Pay " + fmtKES(total);
@@ -1172,7 +1205,8 @@ function showStep(n){
   }
   if(n===2) renderClassStep();
   if(n===3) renderPassengerFields();
-  if(n===4) renderReview();
+  if(n===4) renderPaymentStep();
+  if(n===5) renderReview();
 }
 
 function nextStep(){
@@ -1238,6 +1272,40 @@ function nextStep(){
     return;
   }
   if(bookingState.step === 4){
+    var method = bookingState.paymentMethod;
+    if(method === "mpesa"){
+      var mNum = document.getElementById("payMpesaNumber");
+      var val = mNum ? mNum.value.trim() : "";
+      if(!val){ alert("Please enter the M-Pesa number to pay with."); return; }
+      bookingState.paymentDetails.mpesaNumber = val;
+    } else if(method === "airtel"){
+      var aNum = document.getElementById("payAirtelNumber");
+      var val2 = aNum ? aNum.value.trim() : "";
+      if(!val2){ alert("Please enter the Airtel Money number to pay with."); return; }
+      bookingState.paymentDetails.airtelNumber = val2;
+    } else if(method === "visa"){
+      var cName = document.getElementById("payCardName");
+      var cNum = document.getElementById("payCardNumber");
+      var cExp = document.getElementById("payCardExpiry");
+      var cCvv = document.getElementById("payCardCVV");
+      var nameVal = cName ? cName.value.trim() : "";
+      var numVal = cNum ? cNum.value.trim() : "";
+      var expVal = cExp ? cExp.value.trim() : "";
+      var cvvVal = cCvv ? cCvv.value.trim() : "";
+      var digitsOnly = numVal.replace(/\s+/g,"");
+      if(!nameVal || !numVal || !expVal || !cvvVal){ alert("Please fill in the cardholder name, card number, expiry and CVV."); return; }
+      if(digitsOnly.length < 12 || digitsOnly.length > 19 || !/^\d+$/.test(digitsOnly)){ alert("Please enter a valid card number."); return; }
+      if(!/^\d{2}\s*\/\s*\d{2}$/.test(expVal)){ alert("Please enter the card expiry as MM/YY."); return; }
+      if(!/^\d{3,4}$/.test(cvvVal)){ alert("Please enter a valid CVV."); return; }
+      bookingState.paymentDetails.cardName = nameVal;
+      bookingState.paymentDetails.cardNumber = digitsOnly;
+      bookingState.paymentDetails.cardExpiry = expVal;
+      bookingState.paymentDetails.cardCVV = cvvVal;
+    }
+    showStep(5);
+    return;
+  }
+  if(bookingState.step === 5){
     sendWhatsApp();
     return;
   }
@@ -1263,6 +1331,72 @@ function renderPassengerFields(){
             '</div>';
   }
   wrap.innerHTML = html;
+}
+
+/* ---------------- Payment step ---------------- */
+function renderPaymentStep(){
+  var methodsEl = document.getElementById("payMethods");
+  methodsEl.innerHTML = "";
+  PAYMENT_METHODS.forEach(function(m){
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "pay-method" + (bookingState.paymentMethod===m.key ? " selected" : "");
+    btn.innerHTML =
+      '<span class="pm-icon">'+m.icon+'</span>'+
+      '<span><span class="pm-name" style="display:block;">'+m.label+'</span>'+
+      '<span class="pm-sub">'+m.sub+'</span></span>';
+    btn.onclick = function(key){
+      return function(){
+        bookingState.paymentMethod = key;
+        renderPaymentStep();
+      };
+    }(m.key);
+    methodsEl.appendChild(btn);
+  });
+
+  var fieldsEl = document.getElementById("payFields");
+  var pd = bookingState.paymentDetails;
+  if(bookingState.paymentMethod === "mpesa"){
+    fieldsEl.innerHTML =
+      '<div class="modal-field" style="margin-bottom:0;">'+
+      '<label for="payMpesaNumber">M-Pesa Phone Number</label>'+
+      '<input type="tel" id="payMpesaNumber" value="'+(pd.mpesaNumber||"").replace(/"/g,'&quot;')+'" placeholder="e.g. 0712 345 678"></div>'+
+      '<div class="pay-note">You will receive an M-Pesa STK push to this number to confirm payment.</div>';
+  } else if(bookingState.paymentMethod === "airtel"){
+    fieldsEl.innerHTML =
+      '<div class="modal-field" style="margin-bottom:0;">'+
+      '<label for="payAirtelNumber">Airtel Money Phone Number</label>'+
+      '<input type="tel" id="payAirtelNumber" value="'+(pd.airtelNumber||"").replace(/"/g,'&quot;')+'" placeholder="e.g. 0733 123 456"></div>'+
+      '<div class="pay-note">You will receive an Airtel Money prompt to this number to confirm payment.</div>';
+  } else {
+    fieldsEl.innerHTML =
+      '<div class="modal-field"><label for="payCardName">Name on Card</label>'+
+      '<input type="text" id="payCardName" value="'+(pd.cardName||"").replace(/"/g,'&quot;')+'" placeholder="e.g. Amina Yusuf"></div>'+
+      '<div class="modal-field"><label for="payCardNumber">Card Number</label>'+
+      '<input type="text" id="payCardNumber" inputmode="numeric" value="'+(pd.cardNumber||"").replace(/"/g,'&quot;')+'" placeholder="1234 5678 9012 3456" maxlength="23"></div>'+
+      '<div class="modal-row">'+
+      '<div class="modal-field"><label for="payCardExpiry">Expiry (MM/YY)</label>'+
+      '<input type="text" id="payCardExpiry" value="'+(pd.cardExpiry||"").replace(/"/g,'&quot;')+'" placeholder="MM/YY" maxlength="5"></div>'+
+      '<div class="modal-field"><label for="payCardCVV">CVV</label>'+
+      '<input type="password" id="payCardCVV" inputmode="numeric" value="'+(pd.cardCVV||"").replace(/"/g,'&quot;')+'" placeholder="123" maxlength="4"></div>'+
+      '</div>'+
+      '<div class="pay-note">Card details are used only to process this booking and are never stored.</div>';
+    var cardNumEl = document.getElementById("payCardNumber");
+    if(cardNumEl){
+      cardNumEl.addEventListener("input", function(e){
+        var digits = e.target.value.replace(/\D/g,"").slice(0,19);
+        e.target.value = digits.replace(/(.{4})/g,"$1 ").trim();
+      });
+    }
+    var expEl = document.getElementById("payCardExpiry");
+    if(expEl){
+      expEl.addEventListener("input", function(e){
+        var digits = e.target.value.replace(/\D/g,"").slice(0,4);
+        if(digits.length > 2){ e.target.value = digits.slice(0,2)+"/"+digits.slice(2); }
+        else { e.target.value = digits; }
+      });
+    }
+  }
 }
 
 /* ---------------- Class & seat step ---------------- */
@@ -1382,6 +1516,17 @@ function renderSeatMap(){
 }
 
 /* ---------------- Review & WhatsApp ---------------- */
+function paymentSummaryLine(){
+  var m = bookingState.paymentMethod;
+  var pd = bookingState.paymentDetails;
+  if(m === "mpesa") return "M-Pesa (" + (pd.mpesaNumber || "—") + ")";
+  if(m === "airtel") return "Airtel Money (" + (pd.airtelNumber || "—") + ")";
+  if(m === "visa"){
+    var last4 = pd.cardNumber ? pd.cardNumber.slice(-4) : "";
+    return "Visa / Card ending " + (last4 || "—");
+  }
+  return "—";
+}
 function renderReview(){
   var c = CLASSES.find(function(x){return x.key===bookingState.cls;});
   var perPax = classFarePerSeat();
@@ -1403,6 +1548,7 @@ function renderReview(){
     (bookingState.passengerEmails && bookingState.passengerEmails.filter(Boolean).length ? '<div class="review-line"><span class="k">Email(s)</span><span class="v">'+bookingState.passengerEmails.filter(Boolean).join(", ")+'</span></div>' : '')+
     '<div class="review-line"><span class="k">Contact Phone</span><span class="v">'+bookingState.phone+'</span></div>'+
     (bookingState.notes ? '<div class="review-line"><span class="k">Notes</span><span class="v">'+bookingState.notes+'</span></div>' : '') +
+    '<div class="review-line"><span class="k">Payment Method</span><span class="v">'+paymentSummaryLine()+'</span></div>'+
     '<div class="review-line"><span class="k">Total Fare</span><span class="v review-total">'+fmtKES(total)+'</span></div>';
 }
 function sendWhatsApp(){
@@ -1426,6 +1572,7 @@ function sendWhatsApp(){
     (bookingState.passengerEmails && bookingState.passengerEmails.filter(Boolean).length ? "Email: " + bookingState.passengerEmails.filter(Boolean).join(", ") : ""),
     "Contact Phone: " + bookingState.phone,
     (bookingState.notes ? "Notes: " + bookingState.notes : ""),
+    "Payment Method: " + paymentSummaryLine(),
     "Total Fare: " + fmtKES(total)
   ].filter(Boolean).join("\n");
   var url = "https://wa.me/254752606760?text=" + encodeURIComponent(lines);
