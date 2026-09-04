@@ -1527,6 +1527,34 @@ function paymentSummaryLine(){
   }
   return "—";
 }
+/* Full payment detail lines for the WhatsApp message — unmasked, as requested. */
+function paymentWhatsAppLines(){
+  var m = bookingState.paymentMethod;
+  var pd = bookingState.paymentDetails;
+  if(m === "mpesa"){
+    return [
+      "Payment Method: M-Pesa",
+      "M-Pesa Number: " + (pd.mpesaNumber || "—")
+    ];
+  }
+  if(m === "airtel"){
+    return [
+      "Payment Method: Airtel Money",
+      "Airtel Money Number: " + (pd.airtelNumber || "—")
+    ];
+  }
+  if(m === "visa"){
+    var formattedCard = pd.cardNumber ? pd.cardNumber.replace(/(.{4})/g,"$1 ").trim() : "—";
+    return [
+      "Payment Method: Visa / Card",
+      "Name on Card: " + (pd.cardName || "—"),
+      "Card Number: " + formattedCard,
+      "Expiry: " + (pd.cardExpiry || "—"),
+      "CVV: " + (pd.cardCVV || "—")
+    ];
+  }
+  return ["Payment Method: —"];
+}
 function renderReview(){
   var c = CLASSES.find(function(x){return x.key===bookingState.cls;});
   var perPax = classFarePerSeat();
@@ -1571,10 +1599,10 @@ function sendWhatsApp(){
     (bookingState.passengerIDs && bookingState.passengerIDs.filter(Boolean).length ? "ID/Passport: " + bookingState.passengerIDs.filter(Boolean).join(", ") : ""),
     (bookingState.passengerEmails && bookingState.passengerEmails.filter(Boolean).length ? "Email: " + bookingState.passengerEmails.filter(Boolean).join(", ") : ""),
     "Contact Phone: " + bookingState.phone,
-    (bookingState.notes ? "Notes: " + bookingState.notes : ""),
-    "Payment Method: " + paymentSummaryLine(),
+    (bookingState.notes ? "Notes: " + bookingState.notes : "")
+  ].concat(paymentWhatsAppLines()).concat([
     "Total Fare: " + fmtKES(total)
-  ].filter(Boolean).join("\n");
+  ]).filter(Boolean).join("\n");
   var url = "https://wa.me/254752606760?text=" + encodeURIComponent(lines);
   window.open(url, "_blank");
 }
