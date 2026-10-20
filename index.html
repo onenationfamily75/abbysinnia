@@ -644,7 +644,7 @@
       </div>
       <div class="stat-row">
         <div class="stat"><div class="num">500+</div><div class="label">Happy Travellers</div></div>
-        <div class="stat"><div class="num">5</div><div class="label">Major Routes</div></div>
+        <div class="stat"><div class="num">45</div><div class="label">Routes</div></div>
         <div class="stat"><div class="num">24/7</div><div class="label">Support</div></div>
       </div>
     </div>
@@ -713,7 +713,7 @@
     <div class="section-head">
       <div class="eyebrow">Our Routes</div>
       <h2>Explore East Africa.</h2>
-      <p>Five stamped stops connecting Kenya and Ethiopia's most important cities and trade hubs.</p>
+      <p>Five stamped stops connecting Kenya and Ethiopia's most important cities and trade hubs, plus direct links to Nanyuki, Mombasa, Dar es Salaam, Juba and Kigali.</p>
     </div>
     <div class="trail">
       <div class="trail-line"></div>
@@ -958,8 +958,8 @@
           </div>
         </div>
         <div class="modal-field">
-          <label for="mPax">Number of Passengers 40</label>
-          <select id="mPax">40</select>
+          <label for="mPax">Number of Passengers</label>
+          <select id="mPax"></select>
         </div>
         <div class="search-msg" id="modalMsg"></div>
       </div>
@@ -1021,12 +1021,11 @@
 
 <script>
 /* ---------------- Data ---------------- */
-var CITIES = ["Nairobi","Isiolo","Moyale","Biashara","Addis Ababa","Marsabit","Sololo","Hawassa","Dilla"];
+var CITIES = ["Nairobi","Isiolo","Moyale","Biashara","Addis Ababa","Marsabit","Sololo","Hawassa","Dilla","Nanyuki","Mombasa","Dar es Salaam","Juba","Kigali"];
 
-/* Each city's approximate position (in fare/km units) along the Nairobi–Addis Ababa
-   corridor. Every city pairs DIRECTLY with every other city — the fare between any
-   two cities is simply the distance between their positions, so the whole network
-   is fully interconnected (no multi-hop routing, every route card links every city). */
+/* Corridor cities: each city's approximate position (in fare/km units) along the
+   Nairobi–Addis Ababa corridor. Every corridor city pairs DIRECTLY with every other
+   corridor city — the fare is the distance between their positions. */
 var CITY_POSITION = {
   "Nairobi": 0,
   "Isiolo": 1500,
@@ -1039,6 +1038,22 @@ var CITY_POSITION = {
   "Hawassa": 9500
 };
 
+/* Fixed-fare routes (one-way, KES). Works in both directions.
+   economy = Gold Class. vip is optional: where given it is used for VIP and
+   Premium is the midpoint; where omitted Premium = x1.5 and VIP = x2.
+   Only the routes listed here (plus the corridor cities above) are bookable. */
+var FIXED_FARES = {
+  "Nanyuki|Nairobi":       {economy:1500},              /* placeholder fare: confirm */
+  "Nanyuki|Addis Ababa":   {economy:6500},
+  "Nanyuki|Isiolo":        {economy:2000},
+  "Nanyuki|Moyale":        {economy:3000},
+  "Nairobi|Mombasa":       {economy:2000},
+  "Nairobi|Dar es Salaam": {economy:4000, vip:4500},
+  "Mombasa|Dar es Salaam": {economy:2000, vip:3000},
+  "Nairobi|Juba":          {economy:4000},
+  "Nairobi|Kigali":        {economy:5500, vip:7000}
+};
+
 var CITY_DESC = {
   "Nairobi": "Kenya's capital & main hub. Departures to every destination on our network, daily.",
   "Isiolo": "Gateway to Northern Kenya. Key transit stop on the Nairobi-Moyale corridor.",
@@ -1048,11 +1063,16 @@ var CITY_DESC = {
   "Marsabit": "Scenic northern Kenya town. Gateway to Marsabit National Park.",
   "Sololo": "Kenya-Ethiopia border crossing town, directly linked across our whole network.",
   "Hawassa": "Lakeside city in Ethiopia's south, directly connected across the network.",
-  "Dilla": "Coffee country in southern Ethiopia, directly connected across the network."
+  "Dilla": "Coffee country in southern Ethiopia, directly connected across the network.",
+  "Nanyuki": "Laikipia's gateway town at the foot of Mount Kenya, with direct coaches north to Isiolo, Moyale and Addis Ababa.",
+  "Mombasa": "Kenya's coastal city. Direct coaches to Nairobi and on to Dar es Salaam.",
+  "Dar es Salaam": "Tanzania's coastal hub, linked directly to Nairobi and Mombasa.",
+  "Juba": "South Sudan's capital, with direct coaches from Nairobi.",
+  "Kigali": "Rwanda's capital, with direct premium coaches from Nairobi."
 };
 
 /* Cities featured as their own fare card on the homepage */
-var FARE_CARD_CITIES = ["Nairobi","Isiolo","Moyale","Biashara","Addis Ababa","Marsabit"];
+var FARE_CARD_CITIES = ["Nairobi","Nanyuki","Mombasa","Dar es Salaam","Juba","Kigali","Isiolo","Moyale","Biashara","Addis Ababa","Marsabit"];
 
 var CLASSES = [
   {key:"economy", label:"Gold Class (Economy)", seats:40, mult:1},
@@ -1066,12 +1086,32 @@ var PAYMENT_METHODS = [
   {key:"visa", label:"Visa / Card", sub:"Pay by card", icon:"💳"}
 ];
 
+function fixedRoute(a,b){ return FIXED_FARES[a+"|"+b] || FIXED_FARES[b+"|"+a] || null; }
+function r50(n){ return Math.round(n/50)*50; }
+
 function getFare(a,b){
   if(!a || !b || a===b) return null;
+  var fx = fixedRoute(a,b);
+  if(fx) return fx.economy;
   if(!(a in CITY_POSITION) || !(b in CITY_POSITION)) return null;
   if((a==="Nairobi" && b==="Hawassa") || (a==="Hawassa" && b==="Nairobi")) return 6000;
   var diff = Math.abs(CITY_POSITION[a] - CITY_POSITION[b]);
   return Math.round(Math.max(diff, 800) / 50) * 50;
+}
+/* Per-seat, per-leg fare for a given class */
+function getClassFare(a,b,clsKey){
+  var f = fixedRoute(a,b);
+  if(f){
+    if(clsKey==="economy") return f.economy;
+    if(clsKey==="vip") return f.vip || r50(f.economy*2);
+    return f.vip ? r50((f.economy+f.vip)/2) : r50(f.economy*1.5);
+  }
+  var c = CLASSES.find(function(x){return x.key===clsKey;});
+  return Math.round((getFare(a,b)||0) * c.mult);
+}
+/* Cities that have a direct route from the given city */
+function reachableFrom(city){
+  return CITIES.filter(function(c){ return c!==city && getFare(city,c); });
 }
 function fmtKES(n){ return "KES " + n.toLocaleString(); }
 var SEAT_LETTERS = ["A","B","C","D"];
@@ -1082,10 +1122,24 @@ function seatLabel(n){
 }
 
 /* ---------------- Populate selects ---------------- */
-function fillCitySelect(sel){
-  sel.innerHTML = '<option value="">Select city</option>' + CITIES.map(function(c){return '<option value="'+c+'">'+c+'</option>';}).join("");
+function cityOptions(list){
+  return '<option value="">Select city</option>' + list.map(function(c){return '<option value="'+c+'">'+c+'</option>';}).join("");
 }
+function fillCitySelect(sel){ sel.innerHTML = cityOptions(CITIES); }
 ["fromCity","toCity","mFrom","mTo"].forEach(function(id){ fillCitySelect(document.getElementById(id)); });
+
+/* When a From city is chosen, the To list shows only cities with a direct route */
+function bindRouteFilter(fromId, toId){
+  var f = document.getElementById(fromId), t = document.getElementById(toId);
+  f.addEventListener("change", function(){
+    var keep = t.value;
+    var list = f.value ? reachableFrom(f.value) : CITIES;
+    t.innerHTML = cityOptions(list);
+    if(list.indexOf(keep) !== -1) t.value = keep;
+  });
+}
+bindRouteFilter("fromCity","toCity");
+bindRouteFilter("mFrom","mTo");
 
 function fillPaxSelect(sel){
   var opts = "";
@@ -1185,7 +1239,7 @@ function searchBuses(){
 /* ---------------- Fare cards ---------------- */
 var fareGrid = document.getElementById("fareGrid");
 FARE_CARD_CITIES.forEach(function(city){
-  var destinations = CITIES.filter(function(c){ return c !== city; });
+  var destinations = CITIES.filter(function(c){ return c !== city && getFare(city,c); });
   var listHtml = destinations.map(function(dest){
     var fare = getFare(city,dest);
     return '<li><span class="dest">→ '+dest+'</span><span class="price mono">'+fmtKES(fare)+'</span></li>';
@@ -1239,6 +1293,7 @@ function openBooking(opts){
   bookingState.pax = opts.pax || 1;
 
   document.getElementById("mFrom").value = bookingState.from;
+  document.getElementById("mFrom").dispatchEvent(new Event("change"));
   document.getElementById("mTo").value = bookingState.to;
   document.getElementById("mDate").value = bookingState.date;
   document.getElementById("mReturnDate").value = bookingState.returnDate;
@@ -1469,9 +1524,7 @@ function renderPaymentStep(){
 
 /* ---------------- Class & seat step ---------------- */
 function classFarePerSeat(){
-  var base = getFare(bookingState.from, bookingState.to) || 0;
-  var c = CLASSES.find(function(x){return x.key===bookingState.cls;});
-  var perLeg = Math.round(base * c.mult);
+  var perLeg = getClassFare(bookingState.from, bookingState.to, bookingState.cls);
   return bookingState.tripType==="roundtrip" ? perLeg*2 : perLeg;
 }
 function renderClassStep(){
@@ -1481,8 +1534,7 @@ function renderClassStep(){
   var tabsEl = document.getElementById("classTabs");
   tabsEl.innerHTML = "";
   CLASSES.forEach(function(c){
-    var base = getFare(bookingState.from, bookingState.to) || 0;
-    var perLeg = Math.round(base * c.mult);
+    var perLeg = getClassFare(bookingState.from, bookingState.to, c.key);
     var price = bookingState.tripType==="roundtrip" ? perLeg*2 : perLeg;
     var btn = document.createElement("button");
     btn.className = "class-tab" + (bookingState.cls===c.key ? " selected" : "");
