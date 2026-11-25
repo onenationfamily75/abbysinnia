@@ -606,10 +606,10 @@
 </head>
 <body>
 
-<a href="tel:+254100009185" class="floating-call" aria-label="Call us at +254 100 009 185">
-  <span class="fc-icon">📞</span>
+<a href="https://wa.me/254100009185?text=Hello%20Abyssinia%20Luxury%20Coach%2C%20I%27d%20like%20to%20make%20an%20enquiry." class="floating-call" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp at +254 100 009 185">
+  <span class="fc-icon">💬</span>
   <span class="fc-text">
-    <span class="fc-label">Call Us</span>
+    <span class="fc-label">WhatsApp Us</span>
     <span class="fc-number">+254 100 009 185</span>
   </span>
 </a>
@@ -1009,7 +1009,7 @@
       <!-- Screen 5: Review -->
       <div class="modal-screen" id="screenReview">
         <div class="review-box" id="reviewBox"></div>
-        <div class="pay-note" style="margin-top:14px;">Pressing the button below opens your email app with this booking pre-filled, addressed to abbysinialuxurycoaches@gmail.com. Press <strong>Send</strong> in your email app to confirm your booking.</div>
+        <div class="pay-note" style="margin-top:14px;">Pressing the button below opens WhatsApp with your booking details pre-filled. Press <strong>Send</strong> in WhatsApp to confirm your booking.</div>
       </div>
     </div>
 
@@ -1022,7 +1022,8 @@
 
 <script>
 /* ---------------- Config ---------------- */
-var BOOKING_EMAIL = "abbysinialuxurycoaches@gmail.com";
+/* WhatsApp number that receives booking confirmations (international format, digits only) */
+var WHATSAPP_NUMBER = "25452606760";
 
 /* ---------------- Data ---------------- */
 var CITIES = ["Nairobi","Isiolo","Moyale","Biashara","Addis Ababa","Marsabit","Sololo","Hawassa","Dilla","Nanyuki","Mombasa","Dar es Salaam","Juba","Kigali"];
@@ -1207,7 +1208,7 @@ function searchBuses(){
   var fare = getFare(from,to);
   if(!fare){
     msg.className = "search-msg show missing";
-    msg.textContent = "No direct route between " + from + " and " + to + " yet — email us at " + BOOKING_EMAIL + " and we'll help you connect.";
+    msg.textContent = "No direct route between " + from + " and " + to + " yet — message us on WhatsApp and we'll help you connect.";
     return;
   }
 
@@ -1326,7 +1327,7 @@ function showStep(n){
   if(n===5){
     var perPax = classFarePerSeat();
     var total = perPax * bookingState.pax;
-    document.getElementById("nextBtn").textContent = "Confirm by email · " + fmtKES(total);
+    document.getElementById("nextBtn").textContent = "Confirm on WhatsApp · " + fmtKES(total);
   } else {
     document.getElementById("nextBtn").textContent = "Continue";
   }
@@ -1348,7 +1349,7 @@ function nextStep(){
     var returnTime = document.getElementById("mReturnTime").value;
     if(!from || !to){ msg.className="search-msg show missing"; msg.textContent="Please select both From and To cities."; return; }
     if(from === to){ msg.className="search-msg show missing"; msg.textContent="From and To can't be the same city."; return; }
-    if(!getFare(from,to)){ msg.className="search-msg show missing"; msg.textContent="No direct route yet between "+from+" and "+to+". Try another pair or email us at "+BOOKING_EMAIL+"."; return; }
+    if(!getFare(from,to)){ msg.className="search-msg show missing"; msg.textContent="No direct route yet between "+from+" and "+to+". Try another pair or message us on WhatsApp."; return; }
     if(!date){ msg.className="search-msg show missing"; msg.textContent="Please choose a departure date."; return; }
     if(bookingState.tripType==="roundtrip" && !returnDate){ msg.className="search-msg show missing"; msg.textContent="Please choose a return date."; return; }
     if(!pax || pax < 1){ pax = 1; }
@@ -1433,7 +1434,7 @@ function nextStep(){
     return;
   }
   if(bookingState.step === 5){
-    sendBookingEmail();
+    sendWhatsApp();
     return;
   }
 }
@@ -1507,7 +1508,7 @@ function renderPaymentStep(){
       '<div class="modal-field"><label for="payCardCVV">CVV</label>'+
       '<input type="password" id="payCardCVV" inputmode="numeric" value="'+(pd.cardCVV||"").replace(/"/g,'&quot;')+'" placeholder="123" maxlength="4"></div>'+
       '</div>'+
-      '<div class="pay-note">For your security, only the last 4 digits of your card are included in the booking email. The CVV is never sent or stored.</div>';
+      '<div class="pay-note">For your security, only the last 4 digits of your card are included in the WhatsApp message. The CVV is never sent or stored.</div>';
     var cardNumEl = document.getElementById("payCardNumber");
     if(cardNumEl){
       cardNumEl.addEventListener("input", function(e){
@@ -1639,7 +1640,7 @@ function renderSeatMap(){
     (currentSeats.length ? currentSeats.slice().sort(function(a,b){return a-b;}).map(seatLabel).join(", ") : "none");
 }
 
-/* ---------------- Review & email confirmation ---------------- */
+/* ---------------- Review & WhatsApp confirmation ---------------- */
 function paymentSummaryLine(){
   var m = bookingState.paymentMethod;
   var pd = bookingState.paymentDetails;
@@ -1651,7 +1652,7 @@ function paymentSummaryLine(){
   }
   return "—";
 }
-/* Payment detail lines for the booking email. Card numbers are masked and the
+/* Payment detail lines for the WhatsApp message. Card numbers are masked and the
    CVV is never included. */
 function paymentEmailLines(){
   var m = bookingState.paymentMethod;
@@ -1701,18 +1702,16 @@ function renderReview(){
     '<div class="review-line"><span class="k">Payment Method</span><span class="v">'+paymentSummaryLine()+'</span></div>'+
     '<div class="review-line"><span class="k">Total Fare</span><span class="v review-total">'+fmtKES(total)+'</span></div>';
 }
-function sendBookingEmail(){
+function buildBookingLines(){
   var c = CLASSES.find(function(x){return x.key===bookingState.cls;});
-  var perPax = classFarePerSeat();
-  var total = perPax * bookingState.pax;
+  var total = classFarePerSeat() * bookingState.pax;
   var outboundSeats = bookingState.seats.outbound.slice().sort(function(a,b){return a-b;}).map(seatLabel).join(", ");
   var returnSeats = bookingState.seats.returnLeg.slice().sort(function(a,b){return a-b;}).map(seatLabel).join(", ");
-  var lines = [
-    "Booking Request — Abyssinia Luxury Coach",
+  return [
     "Trip Type: " + (bookingState.tripType==="roundtrip" ? "Round Trip" : "One Way"),
     "Route: " + bookingState.from + " to " + bookingState.to,
-    "Departure: " + bookingState.date + " · " + bookingState.time,
-    (bookingState.tripType==="roundtrip" ? "Return: " + bookingState.returnDate + " · " + bookingState.returnTime : ""),
+    "Departure: " + bookingState.date + " - " + bookingState.time,
+    (bookingState.tripType==="roundtrip" ? "Return: " + bookingState.returnDate + " - " + bookingState.returnTime : ""),
     "Class: " + c.label,
     "Passengers: " + bookingState.pax,
     "Outbound Seats: " + outboundSeats,
@@ -1724,11 +1723,13 @@ function sendBookingEmail(){
     (bookingState.notes ? "Notes: " + bookingState.notes : "")
   ].concat(paymentEmailLines()).concat([
     "Total Fare: " + fmtKES(total)
-  ]).filter(Boolean).join("\n");
-  var subject = "Booking Request: " + bookingState.from + " to " + bookingState.to + " (" + bookingState.date + ")";
-  window.location.href = "mailto:" + BOOKING_EMAIL +
-    "?subject=" + encodeURIComponent(subject) +
-    "&body=" + encodeURIComponent(lines);
+  ]).filter(Boolean);
+}
+
+function sendWhatsApp(){
+  var lines = ["Booking Request — Abyssinia Luxury Coach"].concat(buildBookingLines()).join("\n");
+  var url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(lines);
+  window.open(url, "_blank");
 }
 </script>
 
