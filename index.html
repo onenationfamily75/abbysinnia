@@ -1009,7 +1009,7 @@
       <!-- Screen 5: Review -->
       <div class="modal-screen" id="screenReview">
         <div class="review-box" id="reviewBox"></div>
-        <div class="pay-note" style="margin-top:14px;">Pressing the button below opens WhatsApp with your booking details pre-filled. Press <strong>Send</strong> in WhatsApp to confirm your booking.</div>
+        <div class="pay-note" style="margin-top:14px;">Pressing <strong>Confirm and Pay</strong> opens WhatsApp with your booking details pre-filled. Press <strong>Send</strong> in WhatsApp to confirm your booking.</div>
       </div>
     </div>
 
@@ -1023,7 +1023,7 @@
 <script>
 /* ---------------- Config ---------------- */
 /* WhatsApp number that receives booking confirmations (international format, digits only) */
-var WHATSAPP_NUMBER = "25452606760";
+var WHATSAPP_NUMBER = "254752606760";
 
 /* ---------------- Data ---------------- */
 var CITIES = ["Nairobi","Isiolo","Moyale","Biashara","Addis Ababa","Marsabit","Sololo","Hawassa","Dilla","Nanyuki","Mombasa","Dar es Salaam","Juba","Kigali"];
@@ -1327,7 +1327,7 @@ function showStep(n){
   if(n===5){
     var perPax = classFarePerSeat();
     var total = perPax * bookingState.pax;
-    document.getElementById("nextBtn").textContent = "Confirm on WhatsApp · " + fmtKES(total);
+    document.getElementById("nextBtn").textContent = "Confirm and Pay · " + fmtKES(total);
   } else {
     document.getElementById("nextBtn").textContent = "Continue";
   }
